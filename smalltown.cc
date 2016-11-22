@@ -19,6 +19,7 @@ class SmallTown{
 	private:
 		M monster;
 		C citizens;
+		U current_time, max_time;
 	public:
 		/*	Klasa SmallTown przyjmuje w konstruktorze obiekt reprezentujący bestię oraz
 		kolejno obiekty mieszkańców.	*/
@@ -31,7 +32,7 @@ class SmallTown{
 		void tick(U timeStep){}
 		/*	tuple<string, T, size_t> getStatus() – zwraca nazwę typu potwora, liczbę jego
 		punktów życia (typu T) oraz liczbę pozostałych przy życiu mieszkańców;	*/
-		tuple<string, monster::valueType /* T */, size_t> getStatus(){}
+		tuple<string, M::valueType /* T */, size_t> getStatus(){}
 };
 
 /*
