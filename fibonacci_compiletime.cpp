@@ -9,26 +9,26 @@ constexpr long long fibb(int n){
 template<int n>
 class fib {
 	public:
-		constexpr static long long val = fib<n-1>::val + fib<n-2>::val;
+		const static long long val = fib<n-1>::val + fib<n-2>::val;
 };
 
 template <>
 class fib<0> {
 	public:
-		constexpr static long long val = 0;
+		const static long long val = 0;
 };
 
 template <>
 class fib<1> {
 	public:
-		constexpr static long long val = 1;
+		const static long long val = 1;
 };
 
 
 int main(){
 	constexpr int n = 80;
 	constexpr long long cc = fibb(n);
-	constexpr fib<n> qq;
+	const fib<n> qq;
 	printf("%lld\n%lld\n", cc, qq.val);
 	return 0;
 	}
