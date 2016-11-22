@@ -25,11 +25,10 @@ class fib<1> {
 };
 
 
-		//constexpr static fib<n-2> val2;	
 int main(){
-	int n;
-	constexpr long long cc = fibb(90);
-	constexpr fib<90> qq;
+	constexpr int n = 80;
+	constexpr long long cc = fibb(n);
+	constexpr fib<n> qq;
 	printf("%lld\n%lld\n", cc, qq.val);
 	return 0;
 	}
