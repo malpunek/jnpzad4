@@ -49,6 +49,7 @@ struct Citizen {
         }
 };
 
+
 template <typename T>
 using Adult = Citizen<T, 18, 100, false>;
 

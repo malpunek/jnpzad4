@@ -4,9 +4,9 @@
 #include <type_traits>
 #include "citizen.h"
 
-const char VAMPIRE_N[] = "Vampire";
-const char MUMMY_N[] = "Mummy";
-const char ZOMBIE_N[] = "Zombie";
+constexpr const char VAMPIRE_N[] = "Vampire";
+constexpr const char MUMMY_N[] = "Mummy";
+constexpr const char ZOMBIE_N[] = "Zombie";
 
 template<typename T,
          const char* nameString,
