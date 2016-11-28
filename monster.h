@@ -18,7 +18,7 @@ struct Monster {
             , attackPower_(attackPower)
         {}
 
-        static const std::type_info& valueType;
+        typename T valueType;
 
         T getHealth() const {
             return health_;
@@ -33,9 +33,6 @@ struct Monster {
                 health_ -= damage;
         }
 };
-
-template<typename T, typename TypeTest>
-const std::type_info& Monster<T, TypeTest>::valueType = typeid(T);
 
 template<typename T>
 using Vampire = Monster<T>;
