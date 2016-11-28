@@ -1,16 +1,21 @@
 #ifndef MONSTER_H
 #define MONSTER_H
 #include <cassert>
-#include <typeinfo>
 #include <type_traits>
 #include "citizen.h"
 
+const char VAMPIRE_N[] = "Vampire";
+const char MUMMY_N[] = "Mummy";
+const char ZOMBIE_N[] = "Zombie";
+
 template<typename T,
+         const char* nameString,
          typename TypeTest = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
 struct Monster {
     private:
         T health_;
         T attackPower_;
+        constexpr static const char* name_ = nameString;
     public:
         Monster() = delete;
         Monster(T health, T attackPower)
@@ -18,13 +23,16 @@ struct Monster {
             , attackPower_(attackPower)
         {}
 
-        typename T valueType;
+        typedef T valueType;
 
         T getHealth() const {
             return health_;
         }
         T getAttackPower() const {
             return attackPower_;
+        }
+        const char* getName() {
+            return name_;
         }
         void takeDamage(T damage) {
             if (damage > health_)
@@ -35,13 +43,13 @@ struct Monster {
 };
 
 template<typename T>
-using Vampire = Monster<T>;
+using Vampire = Monster<T, VAMPIRE_N>;
 
 template<typename T>
-using Zombie = Monster<T>;
+using Zombie = Monster<T, ZOMBIE_N>;
 
 template<typename T>
-using Mummy = Monster<T>;
+using Mummy = Monster<T, MUMMY_N>;
 
 template<typename M, typename U>
 void attack(M& monster, U& victim) {

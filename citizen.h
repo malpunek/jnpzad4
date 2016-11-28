@@ -12,17 +12,35 @@ struct Citizen {
     private:
         T age_;
         T health_;
+        T attackPower_;
     public:
         Citizen() = delete;
-        Citizen(T age, T health)
+
+        template <typename Q = T>
+        Citizen(typename std::enable_if<canAttack, Q>::type age, Q health, Q attackPower)
+            : age_(age)
+            , health_(health)
+            , attackPower_(attackPower)
+        {
+            assert(age >= ageLower);
+            assert(age <= ageUpper);
+        }
+
+        template <typename Q = T>
+        Citizen(typename std::enable_if<!canAttack, Q>::type age, Q health)
             : age_(age)
             , health_(health)
         {
             assert(age >= ageLower);
             assert(age <= ageUpper);
         }
+
         T getHealth() const { return health_; }
         T getAge() const { return age_; }
+
+        template <typename Q = T>
+        typename std::enable_if<canAttack, Q>::type getAttackPower() const { return attackPower_; }
+
         void takeDamage (T damage) {
             if (damage > health_)
                 health_ -= health_;
