@@ -17,7 +17,7 @@ struct Citizen {
         Citizen() = delete;
 
         template <typename Q = T>
-        Citizen(typename std::enable_if<canAttack, Q>::type age, Q health, Q attackPower)
+        Citizen(Q health, typename std::enable_if<canAttack, Q>::type age, Q attackPower)
             : age_(age)
             , health_(health)
             , attackPower_(attackPower)
@@ -27,7 +27,7 @@ struct Citizen {
         }
 
         template <typename Q = T>
-        Citizen(typename std::enable_if<!canAttack, Q>::type age, Q health)
+        Citizen(Q health, typename std::enable_if<!canAttack, Q>::type age)
             : age_(age)
             , health_(health)
         {
