@@ -32,10 +32,7 @@ struct container<std::integer_sequence<int, Is...>> {
 int main()
 {
 	constexpr int n = 80;
-	//const fib<n> qq;
-    using X = container<std::make_integer_sequence<int, n> >::type;//remove_last_n::type;
+    using X = container<std::make_integer_sequence<int, n> >::type;
 	constexpr int war = std::tuple_element<20, X>::type::val;
-	//std::cout<< war << std::endl;
-	static_assert(war == 6765, "types do not match");
-    //static_assert(std::is_same<X, int>::value, "types do not match");
+	static_assert(war == 6765, "Wrong number");
 }
