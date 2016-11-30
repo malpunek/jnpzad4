@@ -17,30 +17,31 @@ Należy sprawdzać poprawność parametrów t0 i t1 w czasie kompilacji.
 template<typename M, typename U, U t0, U t1, typename ... C>
 class SmallTown{
 	private:
+		bool attack_time;
 		typedef tuple<C...> C_type;
 		typedef M M_type;
 		C_type citizens;
 		M_type monster;
 		U current_time = t0, max_time = t1;
 	public:
-		/*	Klasa SmallTown przyjmuje w konstruktorze obiekt reprezentujący bestię oraz
-		kolejno obiekty mieszkańców.	*/
-		SmallTown(M m, C... c) : citizens(c...), monster(m){};
-		/*	void tick(U timeStep) – na początku sprawdza aktualny czas; jeśli jest to
-		czas ataku, to następuje atak na wszystkich mieszkańców; na koniec czas
-		w miasteczku przesuwa się o timeStep.	*/
+		
+		SmallTown(M m, C... c) : citizens(c...), monster(m), attack_time(false){};
 		
 		void tick(U timeStep){
-		
+			//@TODO
+			//sprawdz_czy_nie_koniec
+			for (int i = 0; i < 80; i++)
+				if (current_time == U(fib<i>::val)) //@TODO CAST
+					attack_time = true;
+			if (attack_time)	
+				for(size_t i = 0; i < sizeof...(C); ++i)
+					attack<monster, get<i>(citizens)>();
+			current_time += timeStep;
 		}
 
-		/*	tuple<string, T, size_t> getStatus() – zwraca nazwę typu potwora, liczbę jego
-		punktów życia (typu T) oraz liczbę pozostałych przy życiu mieszkańców;	*/
-		
 		tuple<string, typename M::valueType, size_t> getStatus(){
 			return make_tuple(monster.getName(), monster.getHealth(), tuple_size<C_type>::value);
 			//@TODO
-			//czy getName nie powinien być static?
 			//size się nie zgadza
 		}
 
