@@ -1,17 +1,24 @@
 #include "citizen.h"
 #include "monster.h"
-#include "smalltown.h"
+#include "smalltown.cc"
 
 using namespace std;
 
-int main() {
+int main(){
+	
+	
     auto smallTown = SmallTown<Mummy<float>, int, 1, 23, Sheriff<int>, Adult<int>, Teenager<long>>(
             Mummy<float>(100.0f, 1.5f),
             Sheriff<int>(100, 35, 20),
             Adult<int>(100, 21),
-            Teenager<long>(50, 14)
+            Teenager<long>(14, 50)
     );
+	//Mummy<float> M(100.0f, 1.5f);
+	//Sheriff<int> S(100, 35, 20);
+	//Adult<int> A(100, 21);
+	//Teenager<long> T(50, 14);
 
+/*
     smallTown.tick(1);
     smallTown.tick(22);
 
@@ -19,6 +26,6 @@ int main() {
     assert(get<0>(status) != "");
     assert(get<1>(status) == 60);
     assert(get<2>(status) == 3);
-
+*/
     return 0;
 }

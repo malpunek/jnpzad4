@@ -1,10 +1,7 @@
-#include <cstdio>
-#include <algorithm>
-using namespace std;
-
-constexpr long long fibb(int n){
-	return  n <= 1 ? n : fibb(n-1) + fibb(n-2);
-}
+#include <tuple>
+#include <utility>
+#include <type_traits>
+#include <iostream>
 
 template<int n>
 class fib {
@@ -24,11 +21,21 @@ class fib<1> {
 		const static long long val = 1;
 };
 
+template <typename T>
+struct container;
 
-int main(){
+template <int... Is>
+struct container<std::integer_sequence<int, Is...>> {
+    using type = std::tuple< fib<Is>... >;
+};
+
+int main()
+{
 	constexpr int n = 80;
-	constexpr long long cc = fibb(n);
-	const fib<n> qq;
-	printf("%lld\n%lld\n", cc, qq.val);
-	return 0;
-	}
+	//const fib<n> qq;
+    using X = container<std::make_integer_sequence<int, n> >::type;//remove_last_n::type;
+	constexpr int war = std::tuple_element<20, X>::type::val;
+	//std::cout<< war << std::endl;
+	static_assert(war == 6765, "types do not match");
+    //static_assert(std::is_same<X, int>::value, "types do not match");
+}

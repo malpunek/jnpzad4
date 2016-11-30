@@ -59,5 +59,3 @@ using Teenager = Citizen<T, 11, 17, false>;
 template <typename T>
 using Sheriff = Citizen<T, 18, 100, true>;
 #endif
-
-
