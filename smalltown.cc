@@ -1,7 +1,8 @@
-#include <cstdio>
+#include <iostream>
 #include <tuple>
 #include <algorithm>
 #include <cstddef>
+#include <type_traits>
 #include "citizen.h"
 #include "monster.h"
 
@@ -26,9 +27,15 @@ struct Fibo {
     }
 };
 
-template<typename M, typename U, U t0, U t1, typename ... C>
+template<typename M,
+         typename U,
+         U t0,
+         U t1,
+         typename... C>
 class SmallTown{
     private:
+        static_assert(t0 <= t1, "Starting time greater than time limit!");
+        
         typedef std::tuple<C...> C_type;
         typedef M M_type;
         C_type citizens;
@@ -40,20 +47,13 @@ class SmallTown{
         }
 
         template<typename T>
-        size_t isAlive(T a_guy) {
-            if (a_guy.getHealth() == a_guy.getHealth() - a_guy.getHealth())
-                return 0;
-            return 1;
-        }
-
-        template<typename T>
         size_t counter(T firster) {
-            return isAlive(firster);
+            return firster.isAlive();
         }
 
         template<typename T, typename... Ts>
         size_t counter(T firster, Ts... lasts) {
-            return counter(lasts...) + isAlive(firster);
+            return counter(lasts...) + firster.isAlive();
         }
 
         template<std::size_t... Is>
@@ -77,7 +77,6 @@ class SmallTown{
             attacker(std::get<Is>(citizens)...);
         }
     public:
-        
         SmallTown(M m, C... c)
             : citizens(c...)
             , monster(m)
@@ -87,17 +86,15 @@ class SmallTown{
             constexpr static auto fibo = Fibo<FIB_MAX>();
 
             if (!monster.isAlive())
-                printf("%s\n", isCityDead() ? DRAW : CITIZENS_WON);
+                std::cout << (isCityDead() ? DRAW : CITIZENS_WON) << std::endl;
             else if (isCityDead())
-               printf("%s\n", MONSTER_WON);    
-            else {
-                if (fibo.isFibo(current_time))
-                    attackEveryone(std::index_sequence_for<C...>{});
-            }
+                std::cout << MONSTER_WON << std::endl;
+            else if (fibo.isFibo(current_time))
+                attackEveryone(std::index_sequence_for<C...>{});
 
             while (current_time + timeStep > max_time){
                 timeStep -= max_time - current_time;
-                current_time = max_time - max_time;
+                current_time = U(0);
             }
             current_time += timeStep;
         }

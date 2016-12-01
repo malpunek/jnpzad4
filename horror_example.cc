@@ -11,7 +11,7 @@ int main(){
             Mummy<float>(100.0f, 1.5f),
             Sheriff<int>(100, 35, 20),
             Adult<int>(100, 21),
-            Teenager<long>(14, 50)
+            Teenager<long>(50, 14)
     );
 	//Mummy<float> M(100.0f, 1.5f);
 	//Sheriff<int> S(100, 35, 20);
