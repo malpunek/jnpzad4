@@ -37,6 +37,7 @@ struct Citizen {
 
         T getHealth() const { return health_; }
         T getAge() const { return age_; }
+		bool isALive() const { return health_ != health_ - health_; }
 
         template <typename Q = T>
         typename std::enable_if<canAttack, Q>::type getAttackPower() const { return attackPower_; }
@@ -47,6 +48,7 @@ struct Citizen {
             else
                 health_ -= damage;
         }
+
 };
 
 

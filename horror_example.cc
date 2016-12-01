@@ -18,7 +18,7 @@ int main(){
 	//Adult<int> A(100, 21);
 	//Teenager<long> T(50, 14);
 
-/*
+
     smallTown.tick(1);
     smallTown.tick(22);
 
@@ -26,6 +26,6 @@ int main(){
     assert(get<0>(status) != "");
     assert(get<1>(status) == 60);
     assert(get<2>(status) == 3);
-*/
+
     return 0;
 }

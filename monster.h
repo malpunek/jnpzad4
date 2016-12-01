@@ -31,6 +31,9 @@ struct Monster {
         T getAttackPower() const {
             return attackPower_;
         }
+		bool isAlive() const {
+			return health_ != health_ - health_;
+		}
         const char* getName() {
             return name_;
         }

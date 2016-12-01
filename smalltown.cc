@@ -1,4 +1,4 @@
-#include<cstdio>
+#include <cstdio>
 #include <tuple>
 #include "citizen.h"
 #include "monster.h"
@@ -13,6 +13,9 @@ t1 – czas końcowy, po którego przekroczeniu następuje wyzerowanie licznika,
 C... – typy mieszkańców.
 Należy sprawdzać poprawność parametrów t0 i t1 w czasie kompilacji.
 */
+		constexpr const char CITIZENS_WON[] = "CITIZENS WON";
+		constexpr const char MONSTER_WON[] = "MONSTER WON";
+		constexpr const char DRAW[] = "DRAW";
 
 template<typename M, typename U, U t0, U t1, typename ... C>
 class SmallTown{
@@ -23,26 +26,64 @@ class SmallTown{
 		C_type citizens;
 		M_type monster;
 		U current_time = t0, max_time = t1;
+		
+		size_t countAliveCitizens(){
+			size_t wynik = 1;
+	/*		for(size_t i = 0; i < sizeof...(C); ++i)
+				if (get<i>(citizens).isAlive())
+					wynik++;*/
+			return wynik;
+		}
+
+		bool isCityDead(){
+			return countAliveCitizens() == 0;
+		}
+
+		template<typename T>
+		void attacker(T firster){
+			attack(monster, firster);
+		}
+		
+		template<typename T, typename ... Ts>
+		void attacker(T firster, Ts ... lasts){
+			attack(monster, firster);
+			attacker(lasts...);
+		}
+
+			
+		template<std::size_t... Is>
+		void attackEveryone(std::index_sequence<Is...>){
+			attacker(get<Is>(citizens)...);
+			}
 	public:
 		
 		SmallTown(M m, C... c) : citizens(c...), monster(m), attack_time(false){};
 		
+
+
 		void tick(U timeStep){
-			//@TODO
-			//sprawdz_czy_nie_koniec
-			for (int i = 0; i < 80; i++)
-				if (current_time == U(fib<i>::val)) //@TODO CAST
-					attack_time = true;
-			if (attack_time)	
-				for(size_t i = 0; i < sizeof...(C); ++i)
-					attack<monster, get<i>(citizens)>();
+			if (!monster.isAlive())
+				printf("%s\n", isCityDead() ? DRAW:CITIZENS_WON);
+			else if (isCityDead())
+			   printf("%s\n", MONSTER_WON);	   
+			else {
+				for (int i = 0; i < 80; i++)
+					if (current_time == U(fib<i>::val)) //@TODO CAST, MAX_FIB as const
+						attack_time = true;
+				if (attack_time)
+					attackEveryone(std::index_sequence_for<C...>{});
+		//			for(size_t i = 0; i < sizeof...(C); ++i)
+		//				attack(monster, get<i>(citizens));
+				}
+			while (current_time + timeStep > max_time){
+				timeStep -= max_time - current_time;
+				current_time = max_time - max_time;
+				}
 			current_time += timeStep;
 		}
 
 		tuple<string, typename M::valueType, size_t> getStatus(){
-			return make_tuple(monster.getName(), monster.getHealth(), tuple_size<C_type>::value);
-			//@TODO
-			//size się nie zgadza
+			return make_tuple(monster.getName(), monster.getHealth(), countAliveCitizens());
 		}
 
 };
