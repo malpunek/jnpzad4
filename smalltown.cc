@@ -1,33 +1,25 @@
 #include <cstdio>
 #include <tuple>
+#include <algorithm>
+#include <cstddef>
 #include "citizen.h"
 #include "monster.h"
 using namespace std;
 
-template<int n>
-class fib {
-	public:
-		const static long long val = fib<n-1>::val + fib<n-2>::val;
-		static bool isFib(int a){
-			if (a == val or fib<n-1>::isFib(a))
-				return true;
-			return false;
-		}
-};
+template<size_t N>
+struct Fibo {
+    constexpr Fibo() : array() {
+        array[0] = 1;
+        array[1] = 1;
+        for (auto i = 2; i != N; ++i)
+            array[i] = array[i - 1] + array[i - 2]; 
+    }
 
-template <>
-class fib<0> {
-	public:
-		const static long long val = 0;
-};
+    long long unsigned array[N];
 
-template <>
-class fib<1> {
-	public:
-		const static long long val = 1;
-		static bool isFib(int a){
-			return a == 1;
-		}
+    bool isFibo(long long unsigned x) const {
+        return std::binary_search(array, array + N, x);
+    }
 };
 
 // @TODO Należy sprawdzać poprawność parametrów t0 i t1 w czasie kompilacji.
@@ -35,6 +27,7 @@ class fib<1> {
 constexpr const char CITIZENS_WON[] = "CITIZENS WON";
 constexpr const char MONSTER_WON[] = "MONSTER WON";
 constexpr const char DRAW[] = "DRAW";
+constexpr const size_t FIB_MAX = 40;
 
 template<typename M, typename U, U t0, U t1, typename ... C>
 class SmallTown{
@@ -88,21 +81,22 @@ class SmallTown{
 			}
 	public:
 		
-		SmallTown(M m, C... c) : citizens(c...), monster(m), attack_time(false){};
+		SmallTown(M m, C... c) : citizens(c...), monster(m){};
 
 		void tick(U timeStep){
+            constexpr static auto fibo = Fibo<FIB_MAX>();
 			if (!monster.isAlive())
 				printf("%s\n", isCityDead() ? DRAW:CITIZENS_WON);
 			else if (isCityDead())
 			   printf("%s\n", MONSTER_WON);	   
 			else {
-				if (fib<80>::isFib(current_time))
+				if (fibo.isFibo(current_time))
 					attackEveryone(std::index_sequence_for<C...>{});
-				}
+            }
 			while (current_time + timeStep > max_time){
 				timeStep -= max_time - current_time;
 				current_time = max_time - max_time;
-				}
+            }
 			current_time += timeStep;
 		}
 
@@ -112,7 +106,6 @@ class SmallTown{
 		}
 
 };
-
 
 /*
 SmallTown operuje zgodnie z wewnętrznym zegarem. Czas liczony jest w godzinach,
