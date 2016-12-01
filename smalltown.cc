@@ -16,7 +16,7 @@ struct Fibo {
     constexpr Fibo() : array() {
         array[0] = 1;
         array[1] = 1;
-        for (auto i = 2; i != N; ++i)
+        for (size_t i = 2; i < N; ++i)
             array[i] = array[i - 1] + array[i - 2]; 
     }
 
@@ -94,7 +94,7 @@ class SmallTown{
 
             while (current_time + timeStep > max_time){
                 timeStep -= max_time - current_time;
-                current_time = U(0);
+                current_time = current_time - current_time;
             }
             current_time += timeStep;
         }

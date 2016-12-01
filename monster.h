@@ -13,35 +13,31 @@ template<typename T,
          typename TypeTest = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
 struct Monster {
     private:
-        T health_;
-        T attackPower_;
-        constexpr static const char* name_ = nameString;
+        T health;
+        T attackPower;
+        constexpr static const char* name = nameString;
     public:
         Monster() = delete;
         Monster(T health, T attackPower)
-            : health_(health)
-            , attackPower_(attackPower)
+            : health(health)
+            , attackPower(attackPower)
         {}
 
         typedef T valueType;
 
-        T getHealth() const {
-            return health_;
-        }
-        T getAttackPower() const {
-            return attackPower_;
-        }
-		bool isAlive() const {
-			return health_ != health_ - health_;
-		}
-        const char* getName() {
-            return name_;
-        }
+        T getHealth() const { return health; }
+
+        T getAttackPower() const { return attackPower; }
+
+		bool isAlive() const { return health != health - health; }
+
+        const char* getName() const { return name; }
+
         void takeDamage(T damage) {
-            if (damage > health_)
-                health_ -= health_;
+            if (damage > health)
+                health -= health;
             else
-                health_ -= damage;
+                health -= damage;
         }
 };
 
