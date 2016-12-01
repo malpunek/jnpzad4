@@ -78,13 +78,16 @@ class SmallTown{
         }
     public:
         
-        SmallTown(M m, C... c) : citizens(c...), monster(m){};
+        SmallTown(M m, C... c)
+            : citizens(c...)
+            , monster(m)
+        {}        
 
         void tick(U timeStep) {
             constexpr static auto fibo = Fibo<FIB_MAX>();
 
             if (!monster.isAlive())
-                printf("%s\n", isCityDead() ? DRAW:CITIZENS_WON);
+                printf("%s\n", isCityDead() ? DRAW : CITIZENS_WON);
             else if (isCityDead())
                printf("%s\n", MONSTER_WON);    
             else {
@@ -106,19 +109,3 @@ class SmallTown{
 
 };
 
-/*
-SmallTown operuje zgodnie z wewnętrznym zegarem. Czas liczony jest w godzinach,
-od godziny 0 do godziny t1 i potem znów od godziny 0, i tak cyklicznie. Pierwsze
-odliczanie zaczyna się od godziny t0. Potwór atakuje tylko o godzinach równych
-kolejnym liczbom z ciągu Fibonacciego. Obliczenie wszystkich potrzebnych liczb
-z tego ciągu i ich zapamiętanie w jakiejś kolekcji musi odbyć się w czasie
-kompilacji.
-
-Śmierć mieszkańca bądź potwora następuje w momencie, gdy jego liczba punktów
-życia osiągnie zero. Wywołanie tick() na miasteczku z martwym potworem i co
-najmniej jednym żywym mieszkańcem powoduje wypisanie na standardowe wyjście
-komunikatu "CITIZENS WON". Wywołanie tick() na miasteczku z martwymi
-mieszkańcami i żywym potworem powoduje wypisanie na standardowym wyjściu napisu
-"MONSTER WON". Jeśli zarówno mieszańcy, jak i potwór są martwi, to tick()
-wypisuje na standardowe wyjście "DRAW".
-*/
