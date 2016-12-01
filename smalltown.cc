@@ -5,7 +5,7 @@
 #include "citizen.h"
 #include "monster.h"
 
-constexpr const size_t FIBO_MAX = 40;
+constexpr const size_t FIB_MAX = 40;
 const char* CITIZENS_WON = "CITIZENS WON";
 const char* MONSTER_WON = "MONSTER WON";
 const char* DRAW = "DRAW";
@@ -29,7 +29,7 @@ struct Fibo {
 template<typename M, typename U, U t0, U t1, typename ... C>
 class SmallTown{
     private:
-        typedef tuple<C...> C_type;
+        typedef std::tuple<C...> C_type;
         typedef M M_type;
         C_type citizens;
         M_type monster;
@@ -58,7 +58,7 @@ class SmallTown{
 
         template<std::size_t... Is>
         size_t countAliveCitizens(std::index_sequence<Is...>) {
-            return counter(get<Is>(citizens)...);
+            return counter(std::get<Is>(citizens)...);
         }
 
         template<typename T>
@@ -74,14 +74,14 @@ class SmallTown{
 
         template<std::size_t... Is>
         void attackEveryone(std::index_sequence<Is...>) {
-            attacker(get<Is>(citizens)...);
+            attacker(std::get<Is>(citizens)...);
         }
     public:
         
         SmallTown(M m, C... c) : citizens(c...), monster(m){};
 
         void tick(U timeStep) {
-            constexpr static auto fibo = Fibo<FIBO_MAX>();
+            constexpr static auto fibo = Fibo<FIB_MAX>();
 
             if (!monster.isAlive())
                 printf("%s\n", isCityDead() ? DRAW:CITIZENS_WON);
@@ -99,7 +99,7 @@ class SmallTown{
             current_time += timeStep;
         }
 
-        tuple<string, typename M::valueType, size_t> getStatus(){
+        std::tuple<std::string, typename M::valueType, size_t> getStatus(){
             return make_tuple(std::string(monster.getName()), monster.getHealth(),
                     countAliveCitizens(std::index_sequence_for<C...>{}));
         }
