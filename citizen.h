@@ -4,42 +4,42 @@
 #include <type_traits>
 
 template <typename T,
-         unsigned ageLower,
-         unsigned ageUpper,
-         bool canAttack,
+         unsigned age_lower,
+         unsigned age_upper,
+         bool can_attack,
          typename TypeTest = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
 struct Citizen {
     private:
         T health;
         T age;
-        T attackPower;
+        T attack_power;
     public:
         Citizen() = delete;
 
         template <typename Q = T>
-        Citizen(typename std::enable_if<canAttack, Q>::type health, Q age, Q attackPower)
+        Citizen(typename std::enable_if<can_attack, Q>::type health, Q age, Q attack_power)
             : health(health)
             , age(age)
-            , attackPower(attackPower)
+            , attack_power(attack_power)
         {
-            assert(age >= ageLower);
-            assert(age <= ageUpper);
+            assert(age >= age_lower);
+            assert(age <= age_upper);
         }
 
         template <typename Q = T>
-        Citizen(typename std::enable_if<!canAttack, Q>::type health, Q age)
+        Citizen(typename std::enable_if<!can_attack, Q>::type health, Q age)
             : health(health)
             , age(age)
         {
-            assert(age >= ageLower);
-            assert(age <= ageUpper);
+            assert(age >= age_lower);
+            assert(age <= age_upper);
         }
 
         T getHealth() const { return health; }
         T getAge() const { return age; }
 
         template <typename Q = T>
-        typename std::enable_if<canAttack, Q>::type getAttackPower() const { return attackPower; }
+        typename std::enable_if<can_attack, Q>::type getAttackPower() const { return attack_power; }
 
         bool isAlive() const { return health != health - health; }
         void takeDamage (T damage) {

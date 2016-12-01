@@ -47,13 +47,13 @@ class SmallTown{
         }
 
         template<typename T>
-        size_t counter(T firster) {
-            return firster.isAlive();
+        size_t counter(T first) {
+            return first.isAlive();
         }
 
         template<typename T, typename... Ts>
-        size_t counter(T firster, Ts... lasts) {
-            return counter(lasts...) + firster.isAlive();
+        size_t counter(T first, Ts... rest) {
+            return counter(rest...) + first.isAlive();
         }
 
         template<std::size_t... Is>
@@ -62,14 +62,14 @@ class SmallTown{
         }
 
         template<typename T>
-        void attacker(T firster) {
-            attack(monster, firster);
+        void attacker(T first) {
+            attack(monster, first);
         }
         
         template<typename T, typename ... Ts>
-        void attacker(T firster, Ts ... lasts) {
-            attack(monster, firster);
-            attacker(lasts...);
+        void attacker(T first, Ts ... rest) {
+            attack(monster, first);
+            attacker(rest...);
         }
 
         template<std::size_t... Is>

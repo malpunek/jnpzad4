@@ -9,25 +9,25 @@ constexpr const char MUMMY_N[] = "Mummy";
 constexpr const char ZOMBIE_N[] = "Zombie";
 
 template<typename T,
-         const char* nameString,
+         const char* name_string,
          typename TypeTest = typename std::enable_if<std::is_arithmetic<T>::value, T>::type>
 struct Monster {
     private:
         T health;
-        T attackPower;
-        constexpr static const char* name = nameString;
+        T attack_power;
+        constexpr static const char* name = name_string;
     public:
         Monster() = delete;
-        Monster(T health, T attackPower)
+        Monster(T health, T attack_power)
             : health(health)
-            , attackPower(attackPower)
+            , attack_power(attack_power)
         {}
 
         typedef T valueType;
 
         T getHealth() const { return health; }
 
-        T getAttackPower() const { return attackPower; }
+        T getAttackPower() const { return attack_power; }
 
 		bool isAlive() const { return health != health - health; }
 
